@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://kaos.sh/g/ycs"><img src=".github/images/godoc.svg"/></a>
+  <a href="https://kaos.sh/y/ycs"><img src="https://kaos.sh/y/90af1c80265a4597952829f4fcf679c6.svg" alt="Codacy" /></a>
   <a href="https://kaos.sh/c/ycs"><img src="https://kaos.sh/c/ycs.svg" alt="Coverage Status" /></a>
   <a href="https://kaos.sh/w/ycs/ci"><img src="https://kaos.sh/w/ycs/ci.svg" alt="GitHub Actions CI Status" /></a>
   <a href="https://kaos.sh/w/ycs/codeql"><img src="https://kaos.sh/w/ycs/codeql.svg" alt="GitHub Actions CodeQL Status" /></a>
