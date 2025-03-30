@@ -9,6 +9,7 @@ package ycs
 
 import (
 	"fmt"
+	"html"
 	"regexp"
 	"strings"
 	"time"
@@ -522,6 +523,9 @@ func htmlToMarkdown(text string) string {
 	text = strings.ReplaceAll(text, "<li>\n", "• ")
 	text = strings.ReplaceAll(text, "<li>", "• ")
 	text = strings.ReplaceAll(text, "</li>", "")
+	text = strings.ReplaceAll(text, "<ol>\n", "")
+	text = strings.ReplaceAll(text, "<ol>", "")
+	text = strings.ReplaceAll(text, "</ol>", "")
 
 	if strings.Contains(text, "<img") {
 		imgRegex := regexp.MustCompile(`<img src=\"([^"]+)\"[^>]+\>`)
@@ -539,5 +543,5 @@ func htmlToMarkdown(text string) string {
 		}
 	}
 
-	return text
+	return html.UnescapeString(text)
 }
