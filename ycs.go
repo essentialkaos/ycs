@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/essentialkaos/ek/v13/req"
+	"github.com/essentialkaos/ek/v13/reutil"
 	"github.com/essentialkaos/ek/v13/strutil"
 	"github.com/essentialkaos/ek/v13/timeutil"
 )
@@ -187,6 +188,13 @@ var engine *req.Engine
 
 // apiURL is Yandex.Cloud status API URL
 var apiURL = "https://status.yandex.cloud/api"
+
+var (
+	htmlTagStartRegex = regexp.MustCompile(`<(strong|pre|code|ol|ul|li|br|i|b|p)[^>]*\/?>($|\n)?`)
+	htmlTagEndRegex   = regexp.MustCompile(`<\/(strong|pre|code|ol|ul|li|i|b|p)\/?>`)
+	htmlImgTagRegex   = regexp.MustCompile(`<img src=\"([^"]+)\"[^>]+\>`)
+	htmlLinkTagRegex  = regexp.MustCompile(`<a href=\"([^"]+)\"[^>]*>([^<]+)<\/a>`)
+)
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
@@ -501,47 +509,64 @@ func (d *Date) UnmarshalJSON(b []byte) error {
 
 // htmlToMarkdown is simple html to markdown converter
 func htmlToMarkdown(text string) string {
-	text = strings.ReplaceAll(text, "<p>", "")
-	text = strings.ReplaceAll(text, "</p>", "")
-	text = strings.ReplaceAll(text, "<br>", "")
-
-	text = strings.ReplaceAll(text, "<i>", "*")
-	text = strings.ReplaceAll(text, "</i>", "*")
-	text = strings.ReplaceAll(text, "<b>", "**")
-	text = strings.ReplaceAll(text, "</b>", "**")
-	text = strings.ReplaceAll(text, "<strong>", "**")
-	text = strings.ReplaceAll(text, "</strong>", "**")
-
-	text = strings.ReplaceAll(text, "<pre>", "`")
-	text = strings.ReplaceAll(text, "</pre>", "`")
-	text = strings.ReplaceAll(text, "<code>", "```")
-	text = strings.ReplaceAll(text, "</code>", "```")
-
-	text = strings.ReplaceAll(text, "<ul>\n", "")
-	text = strings.ReplaceAll(text, "<ul>", "")
-	text = strings.ReplaceAll(text, "</ul>", "")
-	text = strings.ReplaceAll(text, "<li>\n", "• ")
-	text = strings.ReplaceAll(text, "<li>", "• ")
-	text = strings.ReplaceAll(text, "</li>", "")
-	text = strings.ReplaceAll(text, "<ol>\n", "")
-	text = strings.ReplaceAll(text, "<ol>", "")
-	text = strings.ReplaceAll(text, "</ol>", "")
-
 	if strings.Contains(text, "<img") {
-		imgRegex := regexp.MustCompile(`<img src=\"([^"]+)\"[^>]+\>`)
-
-		for _, f := range imgRegex.FindAllStringSubmatch(text, -1) {
-			text = strings.ReplaceAll(text, f[0], fmt.Sprintf("![IMG](%s)", f[1]))
-		}
+		text, _ = reutil.Replace(htmlImgTagRegex, text, func(found string, submatch []string) string {
+			return fmt.Sprintf("![IMG](%s)", submatch[0])
+		})
 	}
 
 	if strings.Contains(text, "<a ") {
-		linkRegex := regexp.MustCompile(`<a href=\"([^"]+)\">([^<]+)<\/a>`)
-
-		for _, f := range linkRegex.FindAllStringSubmatch(text, -1) {
-			text = strings.ReplaceAll(text, f[0], fmt.Sprintf("[%s](%s)", f[2], f[1]))
-		}
+		text, _ = reutil.Replace(htmlLinkTagRegex, text, func(found string, submatch []string) string {
+			return fmt.Sprintf("[%s](%s)", submatch[1], submatch[0])
+		})
 	}
+
+	index := 0
+
+	text, _ = reutil.Replace(htmlTagStartRegex, text, func(found string, submatch []string) string {
+		switch submatch[0] {
+		case "i":
+			return "*"
+		case "b", "strong":
+			return "**"
+		case "pre":
+			return "`"
+		case "code":
+			return "```"
+		case "ol":
+			index = 1
+			return ""
+		case "ul":
+			index = 0
+			return ""
+		case "br":
+			return "\n"
+		case "li":
+			if index == 0 {
+				return "• "
+			} else {
+				index += 1
+				return fmt.Sprintf("%d. ", index-1)
+			}
+		}
+
+		return ""
+	})
+
+	text, _ = reutil.Replace(htmlTagEndRegex, text, func(found string, submatch []string) string {
+		switch submatch[0] {
+		case "i":
+			return "*"
+		case "b", "strong":
+			return "**"
+		case "pre":
+			return "`"
+		case "code":
+			return "```"
+		}
+
+		return ""
+	})
 
 	return html.UnescapeString(text)
 }
