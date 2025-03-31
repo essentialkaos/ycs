@@ -164,6 +164,19 @@ func (s *YCSSuite) TestDateParsing(c *C) {
 	c.Assert(err, NotNil)
 }
 
+func (s *YCSSuite) TestHtml2Markdown(c *C) {
+	c.Assert(htmlToMarkdown("<i>italic</i>"), Equals, "*italic*")
+	c.Assert(htmlToMarkdown("<b>bold</b>"), Equals, "**bold**")
+	c.Assert(htmlToMarkdown("<strong>bold</strong>"), Equals, "**bold**")
+	c.Assert(htmlToMarkdown("<pre>code</pre>"), Equals, "`code`")
+	c.Assert(htmlToMarkdown("<code>code-block</code>"), Equals, "```code-block```")
+	c.Assert(htmlToMarkdown("<br/>"), Equals, "\n")
+	c.Assert(htmlToMarkdown("<ul><li>Test</li></ul>"), Equals, "• Test")
+	c.Assert(htmlToMarkdown("<ol><li>Test</li></ol>"), Equals, "1. Test")
+	c.Assert(htmlToMarkdown(`<a href="https://domain.com" title="title">Link</a>`), Equals, "[Link](https://domain.com)")
+	c.Assert(htmlToMarkdown(`<img src="https://domain.com/image.png" />`), Equals, "![IMG](https://domain.com/image.png)")
+}
+
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 func handlerServices(rw http.ResponseWriter, r *http.Request) {
