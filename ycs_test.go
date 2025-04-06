@@ -83,6 +83,10 @@ func (s *YCSSuite) TestGetIncidents(c *C) {
 
 	c.Assert(err, IsNil)
 	c.Assert(incidents, HasLen, 20)
+	c.Assert(incidents.HasOpen(), Equals, true)
+
+	incidents = Incidents{}
+	c.Assert(incidents.HasOpen(), Equals, false)
 }
 
 func (s *YCSSuite) TestGetIncident(c *C) {

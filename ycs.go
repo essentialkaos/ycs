@@ -282,6 +282,17 @@ func GetIncident(id uint, lang string) (*Incident, error) {
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
+// HasOpen returns true if slice contains open incident
+func (i Incidents) HasOpen() bool {
+	for _, ii := range i {
+		if ii.Status == STATUS_OPENED {
+			return true
+		}
+	}
+
+	return false
+}
+
 // IsResolved returns true if incident is resolved
 func (i *Incident) IsResolved() bool {
 	return i != nil && i.Status == STATUS_RESOLVED
