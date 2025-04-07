@@ -76,7 +76,7 @@ func (s *YCSSuite) TestGetIncidents(c *C) {
 		Lang:   LANG_RU,
 		From:   time.Date(2023, 12, 1, 0, 0, 0, 0, time.Local),
 		To:     time.Date(2025, 01, 8, 0, 0, 0, 0, time.Local),
-		Status: STATUS_OPENED,
+		Status: STATUS_OPEN,
 		Region: "all",
 		Zones:  []string{ZONE_RU_A},
 	})
