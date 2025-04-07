@@ -47,7 +47,7 @@ const (
 )
 
 const (
-	STATUS_OPENED      = "opened"
+	STATUS_OPEN        = "open"
 	STATUS_RESOLVED    = "resolved"
 	STATUS_WITH_REPORT = "withReport"
 )
@@ -296,7 +296,7 @@ func GetIncident(id uint, lang string) (*Incident, error) {
 // HasOpen returns true if slice contains open incident
 func (i Incidents) HasOpen() bool {
 	for _, ii := range i {
-		if ii.Status == STATUS_OPENED {
+		if ii.Status == STATUS_OPEN {
 			return true
 		}
 	}
