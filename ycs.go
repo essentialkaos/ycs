@@ -183,6 +183,17 @@ type IncidentsRequest struct {
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
+// AllLangs is a slice with all supported languages
+var AllLangs = []string{LANG_EN, LANG_RU}
+
+// AllRegions is a slice with all regions
+var AllRegions = []string{REGION_ALL, REGION_KZ, REGION_RU}
+
+// AllZones is a slice with all availability zones
+var AllZones = []string{ZONE_KZ_A, ZONE_RU_A, ZONE_RU_B, ZONE_RU_C, ZONE_RU_D}
+
+// ////////////////////////////////////////////////////////////////////////////////// //
+
 // engine is HTTP client
 var engine *req.Engine
 
