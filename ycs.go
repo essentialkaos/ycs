@@ -16,6 +16,7 @@ import (
 
 	"github.com/essentialkaos/ek/v13/req"
 	"github.com/essentialkaos/ek/v13/reutil"
+	"github.com/essentialkaos/ek/v13/sliceutil"
 	"github.com/essentialkaos/ek/v13/strutil"
 	"github.com/essentialkaos/ek/v13/timeutil"
 )
@@ -388,15 +389,9 @@ func (i *Incident) ServiceList() []string {
 
 // InRegion filters services and returns only services in a given region (installation)
 func (s Services) InRegion(code string) Services {
-	var result Services
-
-	for _, ss := range s {
-		if ss.InstallationCode == code {
-			result = append(result, ss)
-		}
-	}
-
-	return result
+	return sliceutil.Filter(s, func(ss *Service, _ int) bool {
+		return ss.InstallationCode == code
+	})
 }
 
 // IDs returns slice with IDs of services
