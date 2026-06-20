@@ -14,11 +14,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/essentialkaos/ek/v13/req"
-	"github.com/essentialkaos/ek/v13/reutil"
-	"github.com/essentialkaos/ek/v13/sliceutil"
-	"github.com/essentialkaos/ek/v13/strutil"
-	"github.com/essentialkaos/ek/v13/timeutil"
+	"github.com/essentialkaos/ek/v14/req"
+	"github.com/essentialkaos/ek/v14/reutil"
+	"github.com/essentialkaos/ek/v14/sliceutil"
+	"github.com/essentialkaos/ek/v14/strutil"
+	"github.com/essentialkaos/ek/v14/timeutil"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -44,6 +44,7 @@ const (
 	ZONE_RU_B = "ru-central1-b"
 	ZONE_RU_C = "ru-central1-c"
 	ZONE_RU_D = "ru-central1-d"
+	ZONE_RU_E = "ru-central1-e"
 	ZONE_KZ_A = "kz1-a"
 )
 
@@ -185,13 +186,27 @@ type IncidentsRequest struct {
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 // AllLangs is a slice with all supported languages
-var AllLangs = []string{LANG_EN, LANG_RU}
+var AllLangs = []string{
+	LANG_EN,
+	LANG_RU,
+}
 
 // AllRegions is a slice with all regions
-var AllRegions = []string{REGION_ALL, REGION_KZ, REGION_RU}
+var AllRegions = []string{
+	REGION_ALL,
+	REGION_KZ,
+	REGION_RU,
+}
 
 // AllZones is a slice with all availability zones
-var AllZones = []string{ZONE_KZ_A, ZONE_RU_A, ZONE_RU_B, ZONE_RU_C, ZONE_RU_D}
+var AllZones = []string{
+	ZONE_KZ_A,
+	ZONE_RU_A,
+	ZONE_RU_B,
+	ZONE_RU_C,
+	ZONE_RU_D,
+	ZONE_RU_E,
+}
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
